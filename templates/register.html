@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Anemia Screening</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <style>
+        .register-container {
+            max-width: 500px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .register-header h1 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .register-header p {
+            color: #666;
+            margin: 0;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .password-requirements {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .password-requirements h4 {
+            margin: 0 0 0.5rem 0;
+            color: #333;
+        }
+
+        .password-requirements ul {
+            margin: 0;
+            padding-left: 1.5rem;
+        }
+
+        .password-requirements li {
+            margin-bottom: 0.25rem;
+            color: #666;
+        }
+
+        .password-requirements li.valid {
+            color: #4CAF50;
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 1rem;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-register:hover {
+            background: #45a049;
+        }
+
+        .btn-register:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e1e5e9;
+        }
+
+        .login-link a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            background: #f44336;
+            color: white;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .success-message {
+            background: #4CAF50;
+            color: white;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #4CAF50;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .terms-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .terms-checkbox input {
+            margin-top: 0.25rem;
+        }
+
+        .terms-checkbox label {
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .register-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="blur-bg">
+    <nav>
+        <div class="nav-container">
+            <h2>Anemia Screening</h2>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/screening">Screening Tool</a></li>
+                <li><a href="/doctor">Doctor Section</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register" class="active">Register</a></li>
+            </ul>
+            <div class="profile-section">
+                <a href="/profile" class="profile-logo" title="Profile">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="register-container">
+            <div class="register-header">
+                <h1>Create Account</h1>
+                <p>Join us for advanced anemia screening and health tracking</p>
+            </div>
+
+            <!-- Error/Success Messages -->
+            <div id="errorMessage" class="error-message"></div>
+            <div id="successMessage" class="success-message"></div>
+
+            <!-- Registration Form -->
+            <form id="registerForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name *</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name *</label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password *</label>
+                    <input type="password" id="password" name="password" required>
+                    <div class="password-requirements">
+                        <h4>Password Requirements:</h4>
+                        <ul id="passwordRequirements">
+                            <li id="length">At least 8 characters</li>
+                            <li id="uppercase">One uppercase letter</li>
+                            <li id="lowercase">One lowercase letter</li>
+                            <li id="number">One number</li>
+                            <li id="special">One special character</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password *</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+1 (555) 123-4567">
+                </div>
+
+                <div class="form-group">
+                    <label for="dateOfBirth">Date of Birth</label>
+                    <input type="date" id="dateOfBirth" name="dateOfBirth">
+                </div>
+
+                <div class="terms-checkbox">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">
+                        I agree to the <a href="/terms" target="_blank">Terms of Service</a> and 
+                        <a href="/privacy" target="_blank">Privacy Policy</a>. I understand that this is a 
+                        pre-screening tool and not a substitute for professional medical advice.
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-register" id="registerBtn">
+                    Create Account
+                </button>
+
+                <div class="loading-spinner" id="loadingSpinner">
+                    <div class="spinner"></div>
+                    <p>Creating your account...</p>
+                </div>
+            </form>
+
+            <div class="login-link">
+                <p>Already have an account? <a href="/login">Sign in here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Firebase configuration - Your actual config
+        const firebaseConfig = {
+            apiKey: "AIzaSyCTdfDULpVSQxL_Bag9fL-weADsi-1HG80",
+            authDomain: "anemia-screening-tool.firebaseapp.com",
+            projectId: "anemia-screening-tool",
+            storageBucket: "anemia-screening-tool.firebasestorage.app",
+            messagingSenderId: "601289680510",
+            appId: "1:601289680510:web:d78df440919c456d0a5a2f",
+            measurementId: "G-MHLZNE5XCY"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Password validation
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const passwordRequirements = {
+            length: document.getElementById('length'),
+            uppercase: document.getElementById('uppercase'),
+            lowercase: document.getElementById('lowercase'),
+            number: document.getElementById('number'),
+            special: document.getElementById('special')
+        };
+
+        function validatePassword(password) {
+            const validations = {
+                length: password.length >= 8,
+                uppercase: /[A-Z]/.test(password),
+                lowercase: /[a-z]/.test(password),
+                number: /[0-9]/.test(password),
+                special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+            };
+
+            for (const [key, isValid] of Object.entries(validations)) {
+                if (passwordRequirements[key]) {
+                    passwordRequirements[key].classList.toggle('valid', isValid);
+                }
+            }
+
+            return Object.values(validations).every(Boolean);
+        }
+
+        passwordInput.addEventListener('input', (e) => {
+            validatePassword(e.target.value);
+        });
+
+        confirmPasswordInput.addEventListener('input', (e) => {
+            const password = passwordInput.value;
+            const confirmPassword = e.target.value;
+            
+            if (confirmPassword && password !== confirmPassword) {
+                confirmPasswordInput.setCustomValidity('Passwords do not match');
+            } else {
+                confirmPasswordInput.setCustomValidity('');
+            }
+        });
+
+        // Form submission
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const password = formData.get('password');
+            const confirmPassword = formData.get('confirmPassword');
+            
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                showError('Passwords do not match');
+                return;
+            }
+            
+            // Validate password strength
+            if (!validatePassword(password)) {
+                showError('Password does not meet all requirements');
+                return;
+            }
+            
+            showLoading(true);
+            
+            try {
+                const firstName = formData.get('firstName');
+                const lastName = formData.get('lastName');
+                const email = formData.get('email');
+                const displayName = `${firstName} ${lastName}`.trim();
+                
+                // Create user with Firebase Auth
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                
+                // Update display name
+                await userCredential.user.updateProfile({ displayName: displayName });
+                
+                // Get ID token for backend
+                const idToken = await userCredential.user.getIdToken();
+                
+                // Send registration data to backend
+                const response = await fetch('/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        email: email, 
+                        password: password, 
+                        displayName: displayName,
+                        firstName: firstName,
+                        lastName: lastName,
+                        phone: formData.get('phone'),
+                        dateOfBirth: formData.get('dateOfBirth')
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showSuccess('Account created successfully! Redirecting...');
+                    
+                    // Handle different registration modes
+                    if (result.mode === 'session') {
+                        // Session mode - redirect to profile directly
+                        setTimeout(() => {
+                            window.location.href = '/profile';
+                        }, 2000);
+                    } else {
+                        // Firebase mode - get ID token and login
+                        const idToken = await userCredential.user.getIdToken();
+                        
+                        const loginResponse = await fetch('/auth/login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ idToken: idToken })
+                        });
+
+                        if (loginResponse.ok) {
+                            setTimeout(() => {
+                                window.location.href = '/profile';
+                            }, 2000);
+                        } else {
+                            setTimeout(() => {
+                                window.location.href = '/login';
+                            }, 2000);
+                        }
+                    }
+                } else {
+                    showError(result.error || 'Registration failed');
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                showError(error.message || 'Registration failed. Please try again.');
+            } finally {
+                showLoading(false);
+            }
+        });
+
+        function showLoading(show) {
+            document.getElementById('loadingSpinner').style.display = show ? 'block' : 'none';
+            document.getElementById('registerBtn').disabled = show;
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            document.getElementById('successMessage').style.display = 'none';
+            
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

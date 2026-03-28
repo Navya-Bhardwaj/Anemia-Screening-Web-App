@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Anemia Screening</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+</head>
+<body class="blur-bg">
+    <nav>
+        <div class="nav-container">
+            <h2>Anemia Screening</h2>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/screening">Screening Tool</a></li>
+                <li><a href="/doctor">Doctor Section</a></li>
+                <li><a href="/login" class="active">Login</a></li>
+                <li><a href="/profile">Profile</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <header>
+            <h1>Login</h1>
+            <p>Access your account to manage your health data.</p>
+        </header>
+        <main>
+            <!-- Firebase Authentication -->
+            <div class="auth-container">
+                <div class="auth-tabs">
+                    <button class="tab-btn active" onclick="showTab('email')">Email Login</button>
+                    <button class="tab-btn" onclick="showTab('google')">Google Login</button>
+                    <button class="tab-btn" onclick="showTab('register')">Register</button>
+                </div>
+
+                <!-- Email Login Tab -->
+                <div id="email-tab" class="tab-content active">
+                    <form class="login-form" id="emailLoginForm">
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn">Login</button>
+                    </form>
+                </div>
+
+                <!-- Google Login Tab -->
+                <div id="google-tab" class="tab-content">
+                    <div class="social-login">
+                        <button id="googleSignInBtn" class="btn google-btn">
+                            <span class="google-icon">G</span>
+                            Sign in with Google
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Register Tab -->
+                <div id="register-tab" class="tab-content">
+                    <form class="register-form" id="registerForm">
+                        <div class="form-group">
+                            <label for="reg-email">Email:</label>
+                            <input type="email" id="reg-email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-password">Password:</label>
+                            <input type="password" id="reg-password" name="password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-displayName">Display Name:</label>
+                            <input type="text" id="reg-displayName" name="displayName">
+                        </div>
+                        <button type="submit" class="btn">Register</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Loading Spinner -->
+            <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+                <div class="spinner"></div>
+                <p>Authenticating...</p>
+            </div>
+
+            <!-- Error Message -->
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+        </main>
+        <footer>
+            <p>Note: This is a pre-screening tool. Consult a doctor for accurate diagnosis.</p>
+        </footer>
+    </div>
+
+    <style>
+        .auth-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            border-bottom: 2px solid #4CAF50;
+            color: #4CAF50;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .google-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: #4285F4;
+            color: white;
+        }
+
+        .google-icon {
+            background: white;
+            color: #4285F4;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #4CAF50;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: #f44336;
+            color: white;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+        }
+    </style>
+
+    <script>
+        // Firebase configuration - Your actual config
+        const firebaseConfig = {
+            apiKey: "AIzaSyCTdfDULpVSQxL_Bag9fL-weADsi-1HG80",
+            authDomain: "anemia-screening-tool.firebaseapp.com",
+            projectId: "anemia-screening-tool",
+            storageBucket: "anemia-screening-tool.firebasestorage.app",
+            messagingSenderId: "601289680510",
+            appId: "1:601289680510:web:d78df440919c456d0a5a2f",
+            measurementId: "G-MHLZNE5XCY"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Tab switching
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Show loading
+        function showLoading(show) {
+            document.getElementById('loadingSpinner').style.display = show ? 'block' : 'none';
+        }
+
+        // Show error
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Email login
+        document.getElementById('emailLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showLoading(true);
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                const idToken = await userCredential.user.getIdToken();
+                
+                // Send token to backend
+                const response = await fetch('/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ idToken: idToken })
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    window.location.href = '/profile';
+                } else {
+                    showError(result.error || 'Login failed');
+                }
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                showLoading(false);
+            }
+        });
+
+        // Google login
+        document.getElementById('googleSignInBtn').addEventListener('click', async () => {
+            showLoading(true);
+
+            try {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                const result = await auth.signInWithPopup(provider);
+                const idToken = await result.user.getIdToken();
+
+                // Send token to backend
+                const response = await fetch('/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ idToken: idToken })
+                });
+
+                const loginResult = await response.json();
+                
+                if (response.ok) {
+                    window.location.href = '/profile';
+                } else {
+                    showError(loginResult.error || 'Login failed');
+                }
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                showLoading(false);
+            }
+        });
+
+        // Register
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showLoading(true);
+
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+            const displayName = document.getElementById('reg-displayName').value;
+
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                
+                // Update display name
+                await userCredential.user.updateProfile({ displayName: displayName });
+
+                const idToken = await userCredential.user.getIdToken();
+                
+                // Send registration data to backend
+                const response = await fetch('/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        email: email, 
+                        password: password, 
+                        displayName: displayName 
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    // Auto-login after registration
+                    const loginResponse = await fetch('/auth/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ idToken: idToken })
+                    });
+
+                    if (loginResponse.ok) {
+                        window.location.href = '/profile';
+                    } else {
+                        showError('Registration successful but login failed');
+                    }
+                } else {
+                    showError(result.error || 'Registration failed');
+                }
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                showLoading(false);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Anemia Screening</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modern-style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Glassmorphism Navigation -->
+    <nav>
+        <div class="nav-container">
+            <h2>AnemiaScreen</h2>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/screening">Screening</a></li>
+                <li><a href="/doctor">Doctors</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Sign Up</a></li>
+            </ul>
+            <div class="profile-section">
+                <a href="/profile" class="profile-logo" title="Profile">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Hero Section -->
+    <section class="profile-hero" style="min-height: 40vh; display: flex; align-items: center; padding: 8rem 2rem 4rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #4facfe 100%);">
+        <div class="container">
+            <div class="profile-header" style="text-align: center; color: white;">
+                <h1 style="font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 1rem;">Your Health Dashboard</h1>
+                <p style="font-size: 1.25rem; color: rgba(255, 255, 255, 0.9);">Track your screening history and monitor your health progress</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Content -->
+    <section class="profile-content" style="padding: 4rem 2rem; background: var(--bg-secondary);">
+        <div class="container">
+            <div class="profile-grid">
+                
+                <!-- Sidebar -->
+                <div class="profile-sidebar">
+                    <!-- Profile Card -->
+                    <div class="profile-card">
+                        <div class="profile-avatar">
+                            {{ (session.get('user_display_name', 'U') or 'U')[0].upper() }}
+                        </div>
+                        <h2>{{ session.get('user_display_name', 'User') }}</h2>
+                        <p>{{ session.get('user_email', 'user@example.com') }}</p>
+                        
+                        <div class="profile-stats">
+                            <div>
+                                <div>{{ session.get('results', [])|length }}</div>
+                                <div>Screenings</div>
+                            </div>
+                            <div>
+                                <div>Active</div>
+                                <div>Status</div>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-secondary">Edit Profile</button>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="quick-actions">
+                        <h3>Quick Actions</h3>
+                        <div>
+                            <a href="/screening" class="btn btn-primary">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                                </svg>
+                                New Screening
+                            </a>
+                            <a href="/progress" class="btn btn-secondary">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                                </svg>
+                                View Progress
+                            </a>
+                            <a href="/doctor" class="btn btn-secondary">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                Find Doctors
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="profile-main">
+                    <!-- Recent Screenings -->
+                    <div class="recent-screenings">
+                        <div class="screenings-header">
+                            <h3>Recent Screenings</h3>
+                            <a href="/progress">View All →</a>
+                            <h3 style="font-size: 1.5rem; font-weight: 600; color: var(--text-primary);">Recent Screenings</h3>
+                            <a href="/progress" style="color: #667eea; text-decoration: none; font-weight: 500;">View All →</a>
+                        </div>
+                        
+                        {% if session.get('results', []) %}
+                            <div class="screenings-list" style="display: grid; gap: 1rem;">
+                                {% for result in session.get('results', [])[-3:] %}
+                                <div class="screening-item" style="display: flex; align-items: center; justify-content: between; padding: 1.5rem; background: var(--bg-secondary); border-radius: 12px; border-left: 4px solid {% if result.color == 'green' %}#4CAF50{% elif result.color == 'yellow' %}#FFC107{% elif result.color == 'red' %}#f44336{% else %}#9E9E9E{% endif %};">
+                                    <div style="display: flex; align-items: center; gap: 1rem;">
+                                        <div class="risk-indicator" style="width: 40px; height: 40px; border-radius: 50%; background: {% if result.color == 'green' %}#4CAF50{% elif result.color == 'yellow' %}#FFC107{% elif result.color == 'red' %}#f44336{% else %}#9E9E9E{% endif %}; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                                            {% if result.risk_level == 'Low' %}✓{% elif result.risk_level == 'Medium' %}!{% elif result.risk_level == 'High' %}⚠{% else %}?{% endif %}
+                                        </div>
+                                        <div>
+                                            <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem;">{{ result.risk_level }} Risk</div>
+                                            <div style="font-size: 0.9rem; color: var(--text-light);">{{ result.date }}</div>
+                                        </div>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <div style="font-weight: 600; color: var(--text-primary);">{{ "%.1f"|format(result.confidence * 100) }}%</div>
+                                        <div style="font-size: 0.9rem; color: var(--text-light);">Confidence</div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div style="text-align: center; padding: 3rem; color: var(--text-secondary);">
+                                <div style="width: 80px; height: 80px; background: var(--bg-secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: var(--text-light);">
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                                    </svg>
+                                </div>
+                                <h4 style="font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">No Screenings Yet</h4>
+                                <p style="margin-bottom: 1.5rem;">Start your first screening to track your health progress</p>
+                                <a href="/screening" class="btn btn-primary">Start Screening</a>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Health Tips -->
+                    <div class="health-tips" style="background: white; padding: 2.5rem; border-radius: 16px; box-shadow: var(--shadow-lg);">
+                        <h3 style="font-size: 1.5rem; font-weight: 600; color: var(--text-primary); margin-bottom: 2rem;">Health Tips & Recommendations</h3>
+                        
+                        <div class="tips-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                            <div class="tip-card" style="padding: 1.5rem; background: var(--bg-secondary); border-radius: 12px; border-top: 3px solid #4CAF50;">
+                                <div style="width: 40px; height: 40px; background: #4CAF50; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; color: white;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                                    </svg>
+                                </div>
+                                <h4 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Regular Screenings</h4>
+                                <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5;">Schedule regular screenings every 3-6 months for early detection</p>
+                            </div>
+                            
+                            <div class="tip-card" style="padding: 1.5rem; background: var(--bg-secondary); border-radius: 12px; border-top: 3px solid #667eea;">
+                                <div style="width: 40px; height: 40px; background: #667eea; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; color: white;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                </div>
+                                <h4 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Consult Experts</h4>
+                                <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5;">Connect with hematologists for personalized care</p>
+                            </div>
+                            
+                            <div class="tip-card" style="padding: 1.5rem; background: var(--bg-secondary); border-radius: 12px; border-top: 3px solid #FFC107;">
+                                <div style="width: 40px; height: 40px; background: #FFC107; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; color: white;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                                    </svg>
+                                </div>
+                                <h4 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Track Progress</h4>
+                                <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5;">Monitor your health trends over time</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .ai-gradient {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .profile-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .profile-main {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .profile-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+        }
+        
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-weight: 700;
+            font-size: 2rem;
+        }
+        
+        .profile-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-stats > div {
+            text-align: center;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+        
+        .profile-stats > div > div:first-child {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .profile-stats > div > div:last-child {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        
+        .quick-actions {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .quick-actions h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .quick-actions > div {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .recent-screenings {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .screenings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .screenings-header h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .screenings-header a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .screenings-list {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .screening-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            border-left: 4px solid;
+        }
+        
+        .risk-low {
+            border-left-color: #4CAF50;
+        }
+        
+        .risk-medium {
+            border-left-color: #FFC107;
+        }
+        
+        .risk-high {
+            border-left-color: #f44336;
+        }
+        
+        .risk-unknown {
+            border-left-color: #9E9E9E;
+        }
+        
+        .screening-item > div:first-child {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .screening-item > div:first-child > div:last-child > div:first-child {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .screening-item > div:first-child > div:last-child > div:last-child {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        
+        .screening-item > div:last-child {
+            text-align: right;
+        }
+        
+        .screening-item > div:last-child > div:first-child {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .screening-item > div:last-child > div:last-child {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        
+        .risk-indicator {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .risk-low .risk-indicator {
+            background: #4CAF50;
+        }
+        
+        .risk-medium .risk-indicator {
+            background: #FFC107;
+        }
+        
+        .risk-high .risk-indicator {
+            background: #f44336;
+        }
+        
+        .risk-unknown .risk-indicator {
+            background: #9E9E9E;
+        }
+        
+        .health-tips {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .health-tips h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+        }
+        
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .tip-card {
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            border-top: 3px solid;
+        }
+        
+        .tip-card > div:first-child {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .tip-card h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .tip-card p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 768px) {
+            .profile-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    </style>
+</body>
+</html>

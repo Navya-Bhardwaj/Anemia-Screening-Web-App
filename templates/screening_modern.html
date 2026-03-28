@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Screening - Anemia Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modern-style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Glassmorphism Navigation -->
+    <nav>
+        <div class="nav-container">
+            <h2>AnemiaScreen</h2>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/screening" class="active">Screening</a></li>
+                <li><a href="/doctor">Doctors</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Sign Up</a></li>
+            </ul>
+            <div class="profile-section">
+                <a href="/profile" class="profile-logo" title="Profile">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Screening Hero Section -->
+    <section class="screening-hero" style="min-height: 60vh; display: flex; align-items: center; padding: 8rem 2rem 4rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #4facfe 100%);">
+        <div class="container">
+            <div class="screening-header" style="text-align: center; color: white;">
+                <h1 style="font-size: 3rem; font-weight: 800; margin-bottom: 1rem;">AI-Powered Anemia Screening</h1>
+                <p style="font-size: 1.25rem; color: rgba(255, 255, 255, 0.9); max-width: 600px; margin: 0 auto;">Upload a medical image and get instant AI analysis for anemia detection</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Screening Section -->
+    <section class="screening-main" style="padding: 4rem 2rem; background: var(--bg-secondary);">
+        <div class="container">
+            <div class="screening-interface" style="max-width: 800px; margin: 0 auto;">
+                <!-- Upload Area -->
+                <div class="upload-section" style="background: white; padding: 3rem; border-radius: 16px; box-shadow: var(--shadow-lg); margin-bottom: 2rem;">
+                    <div class="upload-header" style="text-align: center; margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.5rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Upload Medical Image</h2>
+                        <p style="color: var(--text-secondary);">Supported formats: JPG, PNG, HEIC (Max 16MB)</p>
+                    </div>
+                    
+                    <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
+                        <div class="upload-area" style="border: 2px dashed #e1e5e9; border-radius: 12px; padding: 3rem; text-align: center; transition: var(--transition); cursor: pointer;" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" ondragleave="dragLeaveHandler(event);">
+                            <div class="upload-icon" style="width: 80px; height: 80px; background: var(--primary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: white;">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                            </div>
+                            <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Drop your image here</h3>
+                            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">or click to browse</p>
+                            <input type="file" id="file-input" name="file" accept="image/*" style="display: none;" required>
+                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('file-input').click();">Choose File</button>
+                        </div>
+                        
+                        <div id="file-preview" style="display: none; margin-top: 2rem;">
+                            <div class="preview-container" style="position: relative; border-radius: 12px; overflow: hidden;">
+                                <img id="preview-image" style="width: 100%; height: auto; border-radius: 12px;">
+                                <button type="button" class="remove-file" style="position: absolute; top: 1rem; right: 1rem; background: rgba(255, 255, 255, 0.9); border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-md);" onclick="removeFile();">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="submit-section" style="text-align: center; margin-top: 2rem; display: none;" id="submit-section">
+                            <button type="submit" class="btn btn-primary" style="padding: 1rem 3rem; font-size: 1.1rem;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
+                                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                                </svg>
+                                Start AI Analysis
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Guidelines Section -->
+                <div class="guidelines-section" style="background: white; padding: 2rem; border-radius: 16px; box-shadow: var(--shadow-md);">
+                    <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1.5rem;">Image Guidelines</h3>
+                    <div class="guidelines-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                        <div class="guideline-item">
+                            <div class="guideline-icon" style="width: 40px; height: 40px; background: rgba(102, 126, 234, 0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem; color: #667eea;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="M12 6v6l4 2"></path>
+                                </svg>
+                            </div>
+                            <h4 style="font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Good Lighting</h4>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5;">Ensure bright, natural lighting for best results</p>
+                        </div>
+                        <div class="guideline-item">
+                            <div class="guideline-icon" style="width: 40px; height: 40px; background: rgba(102, 126, 234, 0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem; color: #667eea;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="2" width="20" height="20" rx="2" ry="2"></rect>
+                                    <circle cx="8" cy="8" r="2"></circle>
+                                    <path d="M14 2v20M20 8h-6M20 16h-6"></path>
+                                </svg>
+                            </div>
+                            <h4 style="font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Clear Focus</h4>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5;">Keep the camera steady and focused on the target area</p>
+                        </div>
+                        <div class="guideline-item">
+                            <div class="guideline-icon" style="width: 40px; height: 40px; background: rgba(102, 126, 234, 0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem; color: #667eea;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                                    <path d="M2 17l10 5 10-5"></path>
+                                    <path d="M2 12l10 5 10-5"></path>
+                                </svg>
+                            </div>
+                            <h4 style="font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Target Areas</h4>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5;">Fingernails, conjunctiva, or palm work best</p>
+                        </div>
+                        <div class="guideline-item">
+                            <div class="guideline-icon" style="width: 40px; height: 40px; background: rgba(102, 126, 234, 0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem; color: #667eea;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                                </svg>
+                            </div>
+                            <h4 style="font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">No Filters</h4>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5;">Use natural images without filters or editing</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loading Modal -->
+    <div id="loading-modal" style="display: none !important; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.8); z-index: 9999; align-items: center; justify-content: center;">
+        <div class="loading-content" style="background: white; padding: 3rem; border-radius: 16px; text-align: center; max-width: 400px;">
+            <div class="loading-spinner" style="width: 60px; height: 60px; border: 4px solid #f3f3f3; border-top: 4px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1.5rem;"></div>
+            <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Analyzing Your Image</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">Our AI is processing your medical image...</p>
+            <div class="progress-bar" style="width: 100%; height: 8px; background: #f3f3f3; border-radius: 4px; overflow: hidden;">
+                <div class="progress-fill" style="width: 0%; height: 100%; background: var(--primary-gradient); transition: width 0.3s ease;"></div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .upload-area.dragover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+        
+        #loading-modal {
+            display: none !important;
+        }
+        
+        #loading-modal.show {
+            display: flex !important;
+        }
+    </style>
+
+    <script>
+        // File upload handling
+        const fileInput = document.getElementById('file-input');
+        const uploadArea = document.querySelector('.upload-area');
+        const filePreview = document.getElementById('file-preview');
+        const previewImage = document.getElementById('preview-image');
+        const submitSection = document.getElementById('submit-section');
+        const loadingModal = document.getElementById('loading-modal');
+        const progressFill = document.querySelector('.progress-fill');
+
+        fileInput.addEventListener('change', handleFileSelect);
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                displayPreview(file);
+            }
+        }
+
+        function displayPreview(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                filePreview.style.display = 'block';
+                submitSection.style.display = 'block';
+                uploadArea.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeFile() {
+            fileInput.value = '';
+            filePreview.style.display = 'none';
+            submitSection.style.display = 'none';
+            uploadArea.style.display = 'block';
+        }
+
+        // Drag and drop handling
+        function dragOverHandler(event) {
+            event.preventDefault();
+            uploadArea.classList.add('dragover');
+        }
+
+        function dragLeaveHandler(event) {
+            event.preventDefault();
+            uploadArea.classList.remove('dragover');
+        }
+
+        function dropHandler(event) {
+            event.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            const files = event.dataTransfer.files;
+            if (files.length > 0 && files[0].type.startsWith('image/')) {
+                fileInput.files = files;
+                displayPreview(files[0]);
+            }
+        }
+
+        // Form submission
+        document.getElementById('upload-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show loading modal
+            loadingModal.classList.add('show');
+            
+            // Simulate progress
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 90) progress = 90;
+                progressFill.style.width = progress + '%';
+            }, 500);
+            
+            // Submit form
+            const formData = new FormData(this);
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Upload failed');
+                }
+                return response.json();
+            })
+            .then(data => {
+                clearInterval(progressInterval);
+                progressFill.style.width = '100%';
+                
+                setTimeout(() => {
+                    loadingModal.classList.remove('show');
+                    if (data.success && data.redirect) {
+                        // Store result data in session storage for the result page
+                        if (data.result) {
+                            sessionStorage.setItem('screeningResult', JSON.stringify(data.result));
+                        }
+                        window.location.href = data.redirect;
+                    } else {
+                        alert('Error processing image. Please try again.');
+                    }
+                }, 1000);
+            })
+            .catch(error => {
+                clearInterval(progressInterval);
+                loadingModal.classList.remove('show');
+                alert('Error uploading file. Please try again.');
+            });
+        });
+
+        // Make upload area clickable
+        uploadArea.addEventListener('click', function() {
+            fileInput.click();
+        });
+    </script>
+</body>
+</html>

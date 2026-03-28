@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Doctors - Anemia Screening</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modern-style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Glassmorphism Navigation -->
+    <nav>
+        <div class="nav-container">
+            <h2>AnemiaScreen</h2>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/screening">Screening</a></li>
+                <li><a href="/doctor" class="active">Doctors</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Sign Up</a></li>
+            </ul>
+            <div class="profile-section">
+                <a href="/profile" class="profile-logo" title="Profile">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Doctor Hero Section -->
+    <section class="doctor-hero" style="min-height: 60vh; display: flex; align-items: center; padding: 8rem 2rem 4rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #4facfe 100%);">
+        <div class="container">
+            <div class="doctor-header" style="text-align: center; color: white;">
+                <h1 style="font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 1rem;">Connect with <span class="ai-gradient">Expert Doctors</span></h1>
+                <p style="font-size: 1.25rem; color: rgba(255, 255, 255, 0.9); max-width: 600px; margin: 0 auto;">Find board-certified hematologists and nutritionists specialized in anemia treatment and management</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section" style="padding: 4rem 2rem; background: var(--bg-secondary);">
+        <div class="container">
+            <div class="search-container" style="max-width: 800px; margin: 0 auto;">
+                <div class="search-card" style="background: white; padding: 2.5rem; border-radius: 16px; box-shadow: var(--shadow-lg);">
+                    <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem; text-align: center;">Find Your Specialist</h2>
+                    <p style="color: var(--text-secondary); text-align: center; margin-bottom: 2rem;">Search by specialty, location, or name</p>
+                    
+                    <div class="search-filters" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                        <select style="width: 100%; padding: 1rem; border: 2px solid #e1e5e9; border-radius: 8px; font-size: 1rem; background: white;">
+                            <option>All Specialties</option>
+                            <option>Hematology</option>
+                            <option>Nutrition</option>
+                            <option>Internal Medicine</option>
+                            <option>Pediatrics</option>
+                            <option>Family Medicine</option>
+                        </select>
+                        <input type="text" placeholder="Location or City" style="width: 100%; padding: 1rem; border: 2px solid #e1e5e9; border-radius: 8px; font-size: 1rem;">
+                        <input type="text" placeholder="Doctor Name" style="width: 100%; padding: 1rem; border: 2px solid #e1e5e9; border-radius: 8px; font-size: 1rem;">
+                    </div>
+                    
+                    <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem; font-weight: 600;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        Search Doctors
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Doctors -->
+    <section class="featured-doctors" style="padding: 6rem 2rem; background: white;">
+        <div class="container">
+            <div class="section-header scroll-reveal">
+                <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-primary); text-align: center;">Featured Specialists</h2>
+                <p style="font-size: 1.1rem; color: var(--text-secondary); text-align: center; max-width: 600px; margin: 0 auto;">Top-rated healthcare professionals specializing in anemia care</p>
+            </div>
+            
+            <div class="doctors-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+                <!-- Doctor Card 1 -->
+                <div class="doctor-card scroll-reveal" style="background: white; padding: 2rem; border-radius: 16px; box-shadow: var(--shadow-md); border: 1px solid rgba(0, 0, 0, 0.05); transition: var(--transition);">
+                    <div style="display: flex; align-items: start; gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <div class="doctor-avatar" style="width: 80px; height: 80px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.5rem;">
+                            JD
+                        </div>
+                        <div style="flex: 1;">
+                            <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem;">Dr. Jennifer Davis</h3>
+                            <p style="color: #667eea; font-weight: 500; margin-bottom: 0.25rem;">Hematology Specialist</p>
+                            <p style="color: var(--text-light); font-size: 0.9rem;">15 years experience</p>
+                        </div>
+                    </div>
+                    
+                    <div class="doctor-details" style="margin-bottom: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: var(--text-secondary);">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13 9-5 9-5 9-5z"></path>
+                                <path d="M3.05 11a9 9 0 0 1 9-9"></path>
+                            </svg>
+                            <span>Mount Sinai Hospital, New York</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: var(--text-secondary);">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 17H2a3 3 0 0 0 3 3v9a3 3 0 0 0 3-3h17a3 3 0 0 0 3-3v-9a3 3 0 0 0-3-3zm-3.5 0a.5.5 0 0 1-.5.5.5.5 0 0 1-.5-.5.5.5 0 0 1 .5-.5.5.5 0 0 1 .5.5z"></path>
+                            </svg>
+                            <span>Board Certified Hematology</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: var(--text-secondary);">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                            </svg>
+                            <span>4.9 (127 reviews)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="doctor-specialties" style="margin-bottom: 1.5rem;">
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                            <span style="background: rgba(102, 126, 234, 0.1); color: #667eea; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem;">Anemia</span>
+                            <span style="background: rgba(102, 126, 234, 0.1); color: #667eea; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem;">Blood Disorders</span>
+                            <span style="background: rgba(102, 126, 234, 0.1); color: #667eea; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem;">Iron Deficiency</span>
+                        </div>
+                    </div>
+                    
+                    <div class="doctor-actions" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <button class="btn btn-secondary" style="padding: 0.75rem;">View Profile</button>
+                        <button class="btn btn-primary" style="padding: 0.75rem;">Book Consultation</button>
+                    </div>
+                </div>
+
+                <!-- Doctor Card 2 -->
+                <div class="doctor-card scroll-reveal" style="background: white; padding: 2rem; border-radius: 16px; box-shadow: var(--shadow-md); border: 1px solid rgba(0, 0, 0, 0.05); transition: var(--transition); animation-delay: 0.1s;">
+                    <div style="display: flex; align-items: start; gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <div class="doctor-avatar" style="width: 80px; height: 80px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.5rem;">
+                            MC
+                        </div>
+                        <div style="flex: 1;">
+                            <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem;">Dr. Michael Chen</h3>
+                            <p style="color: #667eea; font-weight: 500; margin-bottom: 0.25rem;">Nutrition Specialist</p>
+                            <p style="color: var(--text-light); font-size: 0.9rem;">12 years experience</p>
+                        </div>
+                    </div>
+                    
+                    <div class="doctor-details" style="margin-bottom: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: var(--text-secondary);">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13 9-5 9-5 9-5z"></path>
+                                <path d="M3.05 11a9 9 0 0 1 9-9"></path>
+                            </svg>
+                            <span>Cleveland Clinic, Ohio</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: var(--text-secondary);">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 17H2a3 3 0 0 0 3 3v9a3 3 0 0 0 3-3h17a3 3 0 0 0 3-3v-9a3 3 0 0 0-3-3zm-3.5 0a.5.5 0 0 1-.5.5.5.5 0 0 1-.5-.5.5.5 0 0 1 .5-.5.5.5 0 0 1 .5.5z"></path>
+                            </svg>
+                            <span>Clinical Nutrition</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: var(--text-secondary);">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                            </svg>
+                            <span>4.8 (98 reviews)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="doctor-specialties" style="margin-bottom: 1.5rem;">
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                            <span style="background: rgba(102, 126, 234, 0.1); color: #667eea; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem;">Nutritional Therapy</span>
+                            <span style="background: rgba(102, 126, 234, 0.1); color: #667eea; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem;">Diet Planning</span>
+                            <span style="background: rgba(102, 126, 234, 0.1); color: #667eea; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem;">Supplements</span>
+                        </div>
+                    </div>
+                    
+                    <div class="doctor-actions" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <button class="btn btn-secondary" style="padding: 0.75rem;">View Profile</button>
+                        <button class="btn btn-primary" style="padding: 0.75rem;">Book Consultation</button>
+                    </div>
+                </div>
+
+                <!-- Doctor Card 3 -->
+                <div class="doctor-card scroll-reveal" style="background: white; padding: 2rem; border-radius: 16px; box-shadow: var(--shadow-md); border: 1px solid rgba(0, 0, 0, 0.05); transition: var(--transition); animation-delay: 0.2s;">
+                    <div style="display: flex; align-items: start; gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <div class="doctor-avatar" style="width: 80px; height: 80px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.5rem;">
+                            SR
+                        </div>
+                        <div style="flex: 1;">
+                            <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem;">Dr. Sarah Rodriguez</h3>
+                            <p style="color: #667eea; font-weight: 500; margin-bottom: 0.25rem;">Internal Medicine</p>
+                            <p style="color: var(--text-light); font-size: 0.9rem;">18 years experience</p>
+                        </div>
+                    </div>
+                    
+                    <div class="doctor-details" style="margin-bottom: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: var(--text-secondary);">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13 9-5 9-5 9-5z"></path>
+                                <path d="M3.05 11a9 9 0 0 1 9-9"></path>
+                            </svg>
+                            <span>Mayo Clinic, Minnesota</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: var(--text-secondary);">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 17H2a3 3 0 0 0 3 3v9a3 3 0 0 0 3-3h17a3 3 0 0 0 3-3v-9a3 3 0 0 0-3-3zm-3.5 0a.5.5 0 0 1-.5.5.5.5 0 0 1-.5-.5.5.5 0 0 1 .5-.5.5.5 0 0 1 .5.5z"></path>
+                            </svg>
+                            <span>Internal Medicine</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: var(--text-secondary);">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                            </svg>
+                            <span>4.9 (156 reviews)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="doctor-specialties" style="margin-bottom: 1.5rem;">
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                            <span style="background: rgba(102, 126, 234, 0.1); color: #667eea; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem;">Chronic Anemia</span>
+                            <span style="background: rgba(102, 126, 234, 0.1); color: #667eea; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem;">Adult Medicine</span>
+                            <span style="background: rgba(102, 126, 234, 0.1); color: #667eea; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem;">Preventive Care</span>
+                        </div>
+                    </div>
+                    
+                    <div class="doctor-actions" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <button class="btn btn-secondary" style="padding: 0.75rem;">View Profile</button>
+                        <button class="btn btn-primary" style="padding: 0.75rem;">Book Consultation</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="stats-section" style="padding: 4rem 2rem; background: var(--bg-secondary);">
+        <div class="container">
+            <div class="stats-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                <div class="stat-card scroll-reveal" style="background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--shadow-sm); text-align: center; transition: var(--transition);">
+                    <div class="stat-number" style="font-size: 2.5rem; font-weight: 800; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.5rem;" data-target="500">0</div>
+                    <div class="stat-label" style="color: var(--text-secondary); font-weight: 500;">Verified Doctors</div>
+                </div>
+                <div class="stat-card scroll-reveal" style="background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--shadow-sm); text-align: center; transition: var(--transition); animation-delay: 0.1s;">
+                    <div class="stat-number" style="font-size: 2.5rem; font-weight: 800; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.5rem;" data-target="50">0</div>
+                    <div class="stat-label" style="color: var(--text-secondary); font-weight: 500;">Specializations</div>
+                </div>
+                <div class="stat-card scroll-reveal" style="background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--shadow-sm); text-align: center; transition: var(--transition); animation-delay: 0.2s;">
+                    <div class="stat-number" style="font-size: 2.5rem; font-weight: 800; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.5rem;" data-target="10000">0</div>
+                    <div class="stat-label" style="color: var(--text-secondary); font-weight: 500;">Consultations</div>
+                </div>
+                <div class="stat-card scroll-reveal" style="background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--shadow-sm); text-align: center; transition: var(--transition); animation-delay: 0.3s;">
+                    <div class="stat-number" style="font-size: 2.5rem; font-weight: 800; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.5rem;" data-target="98">0</div>
+                    <div class="stat-label" style="color: var(--text-secondary); font-weight: 500;">Satisfaction %</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" style="padding: 6rem 2rem; background: white;">
+        <div class="container">
+            <div class="section-header scroll-reveal">
+                <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-primary); text-align: center;">How It Works</h2>
+                <p style="font-size: 1.1rem; color: var(--text-secondary); text-align: center; max-width: 600px; margin: 0 auto;">Connect with specialists in 4 simple steps</p>
+            </div>
+            
+            <div class="steps-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem;">
+                <div class="step scroll-reveal">
+                    <div class="step-number" style="width: 60px; height: 60px; background: var(--primary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: white; margin: 0 auto 1.5rem; box-shadow: var(--shadow-md);">1</div>
+                    <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary); text-align: center;">Search Doctors</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.6; text-align: center;">Browse through our verified network of specialists</p>
+                </div>
+                <div class="step scroll-reveal" style="animation-delay: 0.1s;">
+                    <div class="step-number" style="width: 60px; height: 60px; background: var(--primary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: white; margin: 0 auto 1.5rem; box-shadow: var(--shadow-md);">2</div>
+                    <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary); text-align: center;">View Profiles</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.6; text-align: center;">Check credentials, specialties, and patient reviews</p>
+                </div>
+                <div class="step scroll-reveal" style="animation-delay: 0.2s;">
+                    <div class="step-number" style="width: 60px; height: 60px; background: var(--primary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: white; margin: 0 auto 1.5rem; box-shadow: var(--shadow-md);">3</div>
+                    <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary); text-align: center;">Book Consultation</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.6; text-align: center;">Schedule an appointment at your convenience</p>
+                </div>
+                <div class="step scroll-reveal" style="animation-delay: 0.3s;">
+                    <div class="step-number" style="width: 60px; height: 60px; background: var(--primary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: white; margin: 0 auto 1.5rem; box-shadow: var(--shadow-md);">4</div>
+                    <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary); text-align: center;">Get Treatment</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.6; text-align: center;">Receive expert care and personalized treatment plans</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .ai-gradient {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .doctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-fade-in {
+            animation: fadeInUp 0.8s ease-out;
+        }
+    </style>
+
+    <script>
+        // Animated Counter
+        function animateCounter() {
+            const counters = document.querySelectorAll('.stat-number');
+            
+            counters.forEach(counter => {
+                const target = parseFloat(counter.getAttribute('data-target'));
+                const increment = target / 100;
+                let current = 0;
+                
+                const updateCounter = () => {
+                    current += increment;
+                    if (current < target) {
+                        counter.textContent = Math.ceil(current);
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.textContent = target % 1 === 0 ? target : target.toFixed(1);
+                    }
+                };
+                
+                updateCounter();
+            });
+        }
+
+        // Scroll Reveal Animation
+        function handleScrollReveal() {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            
+            reveals.forEach(element => {
+                const windowHeight = window.innerHeight;
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('active');
+                }
+            });
+        }
+
+        // Initialize animations
+        window.addEventListener('load', () => {
+            animateCounter();
+            handleScrollReveal();
+        });
+
+        window.addEventListener('scroll', handleScrollReveal);
+    </script>
+</body>
+</html>

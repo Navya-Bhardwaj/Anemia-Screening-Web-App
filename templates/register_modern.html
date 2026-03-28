@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Anemia Screening</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modern-style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+</head>
+<body>
+    <!-- Glassmorphism Navigation -->
+    <nav>
+        <div class="nav-container">
+            <h2>AnemiaScreen</h2>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/screening">Screening</a></li>
+                <li><a href="/doctor">Doctors</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register" class="active">Sign Up</a></li>
+            </ul>
+            <div class="profile-section">
+                <a href="/profile" class="profile-logo" title="Profile">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Register Hero Section -->
+    <section class="register-hero" style="min-height: 100vh; display: flex; align-items: center; padding: 8rem 2rem 4rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #4facfe 100%);">
+        <div class="container">
+            <div class="register-content" style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
+                <div class="register-left animate-fade-in">
+                    <h1 style="font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; color: white;">
+                        Join the <span class="ai-gradient">Future of Health</span> Screening
+                    </h1>
+                    <p style="font-size: 1.25rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 2rem; line-height: 1.6;">
+                        Create your account and get instant access to AI-powered anemia detection, personalized health insights, and expert medical consultations.
+                    </p>
+                    <div class="register-features" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
+                        <div class="feature-item" style="display: flex; align-items: center; gap: 0.75rem; color: rgba(255, 255, 255, 0.9);">
+                            <div style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 style="font-weight: 600; margin-bottom: 0.25rem;">Free Screening</h4>
+                                <p style="font-size: 0.9rem; opacity: 0.8;">Unlimited AI analysis</p>
+                            </div>
+                        </div>
+                        <div class="feature-item" style="display: flex; align-items: center; gap: 0.75rem; color: rgba(255, 255, 255, 0.9);">
+                            <div style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 style="font-weight: 600; margin-bottom: 0.25rem;">Health Tracking</h4>
+                                <p style="font-size: 0.9rem; opacity: 0.8;">Monitor your progress</p>
+                            </div>
+                        </div>
+                        <div class="feature-item" style="display: flex; align-items: center; gap: 0.75rem; color: rgba(255, 255, 255, 0.9);">
+                            <div style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 style="font-weight: 600; margin-bottom: 0.25rem;">Secure Platform</h4>
+                                <p style="font-size: 0.9rem; opacity: 0.8;">HIPAA compliant</p>
+                            </div>
+                        </div>
+                        <div class="feature-item" style="display: flex; align-items: center; gap: 0.75rem; color: rgba(255, 255, 255, 0.9);">
+                            <div style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9 12l2 2 4-4"></path>
+                                    <path d="M21 12c.552 0 1-.448 1-1V8c0-.552-.448-1-1-1h-1V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v3H1c-.552 0-1 .448-1 1v3c0 .552.448 1 1 1h1v1a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-1h1z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 style="font-weight: 600; margin-bottom: 0.25rem;">Expert Support</h4>
+                                <p style="font-size: 0.9rem; opacity: 0.8;">24/7 medical help</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 1rem;">Already have an account?</p>
+                        <a href="/login" class="btn btn-secondary" style="background: rgba(255, 255, 255, 0.2); color: white; border: 2px solid rgba(255, 255, 255, 0.3); backdrop-filter: blur(10px);">
+                            Sign In
+                        </a>
+                    </div>
+                </div>
+
+                <div class="register-right animate-fade-in" style="animation-delay: 0.2s;">
+                    <div class="register-card" style="background: white; padding: 3rem; border-radius: 20px; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);">
+                        <div class="register-header" style="text-align: center; margin-bottom: 2rem;">
+                            <div style="width: 80px; height: 80px; background: var(--primary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: white;">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="8.5" cy="7" r="4"></circle>
+                                    <line x1="20" y1="8" x2="20" y2="14"></line>
+                                    <line x1="23" y1="11" x2="17" y2="11"></line>
+                                </svg>
+                            </div>
+                            <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">Create Account</h2>
+                            <p style="color: var(--text-secondary);">Start your health journey today</p>
+                        </div>
+
+                        <!-- Error/Success Messages -->
+                        <div id="errorMessage" class="error-message" style="background: #f44336; color: white; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; display: none;"></div>
+                        <div id="successMessage" class="success-message" style="background: #4CAF50; color: white; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; display: none;"></div>
+
+                        <form id="registerForm">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                                <div class="form-group">
+                                    <label for="firstName" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">First Name</label>
+                                    <input type="text" id="firstName" name="firstName" required style="width: 100%; padding: 1rem; border: 2px solid #e1e5e9; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s ease;">
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">Last Name</label>
+                                    <input type="text" id="lastName" name="lastName" required style="width: 100%; padding: 1rem; border: 2px solid #e1e5e9; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s ease;">
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 1.5rem;">
+                                <label for="email" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">Email Address</label>
+                                <input type="email" id="email" name="email" required style="width: 100%; padding: 1rem; border: 2px solid #e1e5e9; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s ease;">
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 1.5rem;">
+                                <label for="password" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">Password</label>
+                                <input type="password" id="password" name="password" required style="width: 100%; padding: 1rem; border: 2px solid #e1e5e9; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s ease;">
+                                <div id="passwordRequirements" style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-light);">
+                                    <div id="req-length" style="color: #f44336;">✓ At least 8 characters</div>
+                                    <div id="req-uppercase" style="color: #f44336;">✓ One uppercase letter</div>
+                                    <div id="req-lowercase" style="color: #f44336;">✓ One lowercase letter</div>
+                                    <div id="req-number" style="color: #f44336;">✓ One number</div>
+                                    <div id="req-special" style="color: #f44336;">✓ One special character</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 1.5rem;">
+                                <label for="confirmPassword" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">Confirm Password</label>
+                                <input type="password" id="confirmPassword" name="confirmPassword" required style="width: 100%; padding: 1rem; border: 2px solid #e1e5e9; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s ease;">
+                                <div id="passwordMatch" style="margin-top: 0.5rem; font-size: 0.85rem; color: #f44336;">Passwords must match</div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                                <div class="form-group">
+                                    <label for="phone" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">Phone (Optional)</label>
+                                    <input type="tel" id="phone" name="phone" style="width: 100%; padding: 1rem; border: 2px solid #e1e5e9; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s ease;">
+                                </div>
+                                <div class="form-group">
+                                    <label for="dateOfBirth" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">Date of Birth</label>
+                                    <input type="date" id="dateOfBirth" name="dateOfBirth" style="width: 100%; padding: 1rem; border: 2px solid #e1e5e9; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s ease;">
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 2rem;">
+                                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                    <input type="checkbox" id="terms" name="terms" required style="width: 20px; height: 20px;">
+                                    <span style="color: var(--text-primary);">I agree to the <a href="#" style="color: #667eea;">Terms of Service</a> and <a href="#" style="color: #667eea;">Privacy Policy</a></span>
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem; font-weight: 600;">
+                                Create Account
+                            </button>
+                        </form>
+
+                        <div class="loading-spinner" id="loadingSpinner" style="display: none; text-align: center; margin: 2rem 0;">
+                            <div class="spinner" style="border: 3px solid #f3f3f3; border-top: 3px solid #667eea; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+                            <p style="margin-top: 1rem; color: var(--text-secondary);">Creating your account...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .ai-gradient {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-fade-in {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .requirement-met {
+            color: #4CAF50 !important;
+        }
+    </style>
+
+    <script>
+        // Firebase configuration - Your actual config
+        const firebaseConfig = {
+            apiKey: "AIzaSyCTdfDULpVSQxL_Bag9fL-weADsi-1HG80",
+            authDomain: "anemia-screening-tool.firebaseapp.com",
+            projectId: "anemia-screening-tool",
+            storageBucket: "anemia-screening-tool.firebasestorage.app",
+            messagingSenderId: "601289680510",
+            appId: "1:601289680510:web:d78df440919c456d0a5a2f",
+            measurementId: "G-MHLZNE5XCY"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Show loading
+        function showLoading(show) {
+            document.getElementById('loadingSpinner').style.display = show ? 'block' : 'none';
+        }
+
+        // Show error
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            document.getElementById('successMessage').style.display = 'none';
+            
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Show success
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        // Password validation
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const passwordRequirements = {
+            length: document.getElementById('req-length'),
+            uppercase: document.getElementById('req-uppercase'),
+            lowercase: document.getElementById('req-lowercase'),
+            number: document.getElementById('req-number'),
+            special: document.getElementById('req-special')
+        };
+
+        function validatePassword(password) {
+            const requirements = {
+                length: password.length >= 8,
+                uppercase: /[A-Z]/.test(password),
+                lowercase: /[a-z]/.test(password),
+                number: /\d/.test(password),
+                special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+            };
+
+            Object.keys(requirements).forEach(key => {
+                if (requirements[key]) {
+                    passwordRequirements[key].classList.add('requirement-met');
+                } else {
+                    passwordRequirements[key].classList.remove('requirement-met');
+                }
+            });
+
+            return Object.values(requirements).every(req => req);
+        }
+
+        function checkPasswordMatch() {
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            const matchDiv = document.getElementById('passwordMatch');
+
+            if (confirmPassword === '') {
+                matchDiv.textContent = 'Please confirm your password';
+                matchDiv.style.color = '#f44336';
+                return false;
+            }
+
+            if (password === confirmPassword) {
+                matchDiv.textContent = '✓ Passwords match';
+                matchDiv.style.color = '#4CAF50';
+                return true;
+            } else {
+                matchDiv.textContent = '✗ Passwords do not match';
+                matchDiv.style.color = '#f44336';
+                return false;
+            }
+        }
+
+        passwordInput.addEventListener('input', () => validatePassword(passwordInput.value));
+        confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+
+        // Form submission
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Validate password
+            if (!validatePassword(passwordInput.value)) {
+                showError('Password does not meet all requirements');
+                return;
+            }
+
+            // Check password match
+            if (!checkPasswordMatch()) {
+                showError('Passwords do not match');
+                return;
+            }
+
+            // Check terms acceptance
+            if (!document.getElementById('terms').checked) {
+                showError('Please accept the terms of service');
+                return;
+            }
+
+            showLoading(true);
+
+            try {
+                const formData = new FormData(e.target);
+                const firstName = formData.get('firstName');
+                const lastName = formData.get('lastName');
+                const email = formData.get('email');
+                const password = formData.get('password');
+                const displayName = `${firstName} ${lastName}`.trim();
+
+                // Create user with Firebase Auth
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                
+                // Update display name
+                await userCredential.user.updateProfile({ displayName: displayName });
+                
+                // Get ID token for backend
+                const idToken = await userCredential.user.getIdToken();
+                
+                // Send registration data to backend
+                const response = await fetch('/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        email: email, 
+                        password: password, 
+                        displayName: displayName,
+                        firstName: firstName,
+                        lastName: lastName,
+                        phone: formData.get('phone'),
+                        dateOfBirth: formData.get('dateOfBirth')
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showSuccess('Account created successfully! Redirecting...');
+                    
+                    setTimeout(() => {
+                        window.location.href = '/profile';
+                    }, 2000);
+                } else {
+                    showError(result.error || 'Registration failed');
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                showError(error.message || 'Registration failed. Please try again.');
+            } finally {
+                showLoading(false);
+            }
+        });
+    </script>
+</body>
+</html>

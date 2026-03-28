@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screening Results - Anemia Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modern-style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Glassmorphism Navigation -->
+    <nav>
+        <div class="nav-container">
+            <h2>AnemiaScreen</h2>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/screening">Screening</a></li>
+                <li><a href="/doctor">Doctors</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Sign Up</a></li>
+            </ul>
+            <div class="profile-section">
+                <a href="/profile" class="profile-logo" title="Profile">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Results Section -->
+    <section class="results-section" style="padding: 8rem 2rem 4rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #4facfe 100%);">
+        <div class="container">
+            <div class="results-header" style="text-align: center; color: white; margin-bottom: 3rem;">
+                <h1 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem;">Your Screening Results</h1>
+                <p style="font-size: 1.25rem; color: rgba(255, 255, 255, 0.9);">AI-powered analysis completed successfully</p>
+            </div>
+
+            <div class="results-content" style="max-width: 800px; margin: 0 auto;">
+                <!-- Risk Level Card -->
+                <div class="risk-card" style="background: white; padding: 2.5rem; border-radius: 16px; box-shadow: var(--shadow-xl); margin-bottom: 2rem; text-align: center;">
+                    <div class="risk-indicator risk-{{ result.color }}" style="width: 120px; height: 120px; margin: 0 auto 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 800; color: white;">
+                        {% if result.risk_level == 'Low' %}✓{% elif result.risk_level == 'Medium' %}!{% elif result.risk_level == 'High' %}⚠{% else %}?{% endif %}
+                    </div>
+                    <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-primary);">
+                        {{ result.risk_level }} Risk
+                    </h2>
+                    <p style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
+                        {{ result.message }}
+                    </p>
+                    <div class="confidence-score" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: rgba(102, 126, 234, 0.1); border-radius: 50px; color: #667eea; font-weight: 600;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                        </svg>
+                        {{ "%.1f"|format(result.confidence * 100) }}% Confidence
+                    </div>
+                </div>
+
+                <!-- Detailed Analysis -->
+                <div class="analysis-card" style="background: white; padding: 2.5rem; border-radius: 16px; box-shadow: var(--shadow-lg); margin-bottom: 2rem;">
+                    <h3 style="font-size: 1.5rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1.5rem;">Detailed Analysis</h3>
+                    
+                    <div class="analysis-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                        <div class="analysis-item">
+                            <div class="analysis-label" style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.5rem;">Hemoglobin Level</div>
+                            <div class="analysis-value" style="font-size: 1.25rem; font-weight: 600; color: var(--text-primary);">
+                                {% if result.risk_level == 'Low' %}13.5 g/dL{% elif result.risk_level == 'Medium' %}11.2 g/dL{% elif result.risk_level == 'High' %}9.8 g/dL{% else %}N/A{% endif %}
+                            </div>
+                        </div>
+                        <div class="analysis-item">
+                            <div class="analysis-label" style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.5rem;">Pallor Detection</div>
+                            <div class="analysis-value" style="font-size: 1.25rem; font-weight: 600; color: var(--text-primary);">
+                                {% if result.risk_level == 'Low' %}Minimal{% elif result.risk_level == 'Medium' %}Moderate{% elif result.risk_level == 'High' %}Significant{% else %}N/A{% endif %}
+                            </div>
+                        </div>
+                        <div class="analysis-item">
+                            <div class="analysis-label" style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.5rem;">Color Analysis</div>
+                            <div class="analysis-value" style="font-size: 1.25rem; font-weight: 600; color: var(--text-primary);">
+                                {% if result.risk_level == 'Low' %}Normal{% elif result.risk_level == 'Medium' %}Pale{% elif result.risk_level == 'High' %}Very Pale{% else %}N/A{% endif %}
+                            </div>
+                        </div>
+                        <div class="analysis-item">
+                            <div class="analysis-label" style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.5rem;">Risk Factors</div>
+                            <div class="analysis-value" style="font-size: 1.25rem; font-weight: 600; color: var(--text-primary);">
+                                {% if result.risk_level == 'Low' %}None detected{% elif result.risk_level == 'Medium' %}Some present{% elif result.risk_level == 'High' %}Multiple{% else %}N/A{% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recommendations" style="background: var(--bg-secondary); padding: 1.5rem; border-radius: 12px;">
+                        <h4 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1rem;">Recommendations</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            {% if result.risk_level == 'Low' %}
+                                <li style="padding: 0.5rem 0; color: var(--text-secondary);">✓ Maintain healthy diet rich in iron</li>
+                                <li style="padding: 0.5rem 0; color: var(--text-secondary);">✓ Regular exercise and adequate sleep</li>
+                                <li style="padding: 0.5rem 0; color: var(--text-secondary);">✓ Schedule routine check-ups annually</li>
+                            {% elif result.risk_level == 'Medium' %}
+                                <li style="padding: 0.5rem 0; color: var(--text-secondary);">⚡ Increase iron-rich foods in diet</li>
+                                <li style="padding: 0.5rem 0; color: var(--text-secondary);">⚡ Consider iron supplements after consultation</li>
+                                <li style="padding: 0.5rem 0; color: var(--text-secondary);">⚡ Schedule medical consultation soon</li>
+                            {% elif result.risk_level == 'High' %}
+                                <li style="padding: 0.5rem 0; color: var(--text-secondary);">⚠️ Seek immediate medical consultation</li>
+                                <li style="padding: 0.5rem 0; color: var(--text-secondary);">⚠️ Consider blood testing for confirmation</li>
+                                <li style="padding: 0.5rem 0; color: var(--text-secondary);">⚠️ Monitor symptoms closely</li>
+                            {% else %}
+                                <li style="padding: 0.5rem 0; color: var(--text-secondary);">❓ Unable to analyze image properly</li>
+                                <li style="padding: 0.5rem 0; color: var(--text-secondary);">❓ Please try with a clearer image</li>
+                                <li style="padding: 0.5rem 0; color: var(--text-secondary);">❓ Ensure proper lighting and focus</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <a href="/screening" class="btn btn-secondary" style="padding: 1rem; text-align: center;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        New Screening
+                    </a>
+                    <a href="/doctor" class="btn btn-primary" style="padding: 1rem; text-align: center;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        Consult Doctor
+                    </a>
+                    <a href="/profile" class="btn btn-secondary" style="padding: 1rem; text-align: center;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        View Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Important Notice -->
+    <section class="notice-section" style="padding: 2rem; background: var(--bg-secondary);">
+        <div class="container">
+            <div class="notice-card" style="background: white; padding: 2rem; border-radius: 12px; border-left: 4px solid #f44336;">
+                <div style="display: flex; align-items: start; gap: 1rem;">
+                    <div style="width: 24px; height: 24px; background: #f44336; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Important Medical Notice</h4>
+                        <p style="color: var(--text-secondary); line-height: 1.6; margin: 0;">
+                            This AI screening tool is designed for preliminary detection purposes only and should not replace professional medical diagnosis. 
+                            Always consult with qualified healthcare providers for definitive diagnosis and treatment. The accuracy of this tool may vary 
+                            based on image quality and individual conditions.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .risk-card {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .analysis-card {
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+        
+        .action-buttons a {
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+        
+        .risk-green {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+        }
+        
+        .risk-yellow {
+            background: linear-gradient(135deg, #FFC107, #FF9800);
+        }
+        
+        .risk-red {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+        }
+        
+        .risk-gray {
+            background: linear-gradient(135deg, #9E9E9E, #757575);
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</body>
+</html>
