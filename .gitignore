@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Sensitive files and credentials
+serviceAccountKey.json
+*.key
+*.pem
+config.py
+.env
+.env.local
+
+# Uploads and temporary files
+uploads/
+*.tmp
+*.temp
+
+# ML model files (if they contain sensitive data)
+models/
+*.h5
+*.pkl
+*.joblib
