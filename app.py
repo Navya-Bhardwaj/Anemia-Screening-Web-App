@@ -294,4 +294,4 @@ def send_result_to_client(result):
         print(f"❌ Error sending result to client: {e}")
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True, host='0.0.0.0', port=5000)
+    socketio.run(app, debug=True, host='0.0.0.0', port=10000)
