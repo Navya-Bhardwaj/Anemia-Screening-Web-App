@@ -1,4 +1,5 @@
 Flask
+gunicorn
 opencv-python
 Pillow
 flask-socketio
@@ -10,4 +11,4 @@ pyrebase4
 tensorflow
 scikit-learn
 requests
-gunicorn
+
